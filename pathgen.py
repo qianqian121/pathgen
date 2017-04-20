@@ -1,7 +1,8 @@
 from math import sqrt
 import matplotlib.pyplot as plt
 
-points = [(0,0), (9,0), (9,6), (0,6), (0,0)]
+points = [(0.0,0.0), (9.0,0.0), (9.0,6.0), (0.0,6.0), (0.0,0.0)]
+loop_close = [(0.0,0.0), (5.0,0.0)]
 # points = [(0,0), (9,0), (9,6), (0,6), (0,0), (5,0)]
 
 def line_zigzag(line, zigzag, step):
@@ -17,8 +18,8 @@ def line_zigzag(line, zigzag, step):
     scale_x = vx / n
     scale_y = vy / n
 
-    x_sign = 1 if vx > 0 else -1
-    y_sign = 1 if vy > 0 else -1
+    x_sign = 1 if vy >= 0 else -1
+    y_sign = 1 if vx >= 0 else -1
     if zigzag == 'zag':
         x_sign *= -1
         y_sign *= -1
@@ -26,23 +27,27 @@ def line_zigzag(line, zigzag, step):
     eps = 0.0001
     if abs(vx) > eps:
         k = vy / vx
-        xoff = x_sign * sqrt(scale ** 2 / (1 + k ** 2)) / 4
-        yoff = y_sign * xoff * k
+        yoff = y_sign * sqrt(scale ** 2 / (1 + k ** 2)) / 4
+        xoff = x_sign * yoff * k
     else:
         ik = vx / vy
-        yoff = y_sign * sqrt(scale ** 2 / (1 + ik ** 2)) / 4
-        xoff = x_sign * yoff * ik
+        xoff = x_sign * sqrt(scale ** 2 / (1 + ik ** 2)) / 4
+        yoff = y_sign * xoff * ik
 
     for i in range(n):
         mx = p1[0] + i * scale_x
         my = p1[1] + i * scale_y
         res.append((mx, my))
-        res.append((mx - xoff, my - yoff))
+        mx += scale_x / 4
+        my += scale_y / 4
+        res.append((mx - xoff, my + yoff))
 
-        mx += scale_x / 2
-        my += scale_y / 2
+        mx += scale_x / 4
+        my += scale_y / 4
         res.append((mx, my))
-        res.append((mx + xoff, my + yoff))
+        mx += scale_x / 4
+        my += scale_y / 4
+        res.append((mx + xoff, my - yoff))
 
     res.append(p2)
     return res
@@ -58,9 +63,10 @@ def path_zigzag(points, zigzag='zig', step=1):
 
 def pathgen(points, step=1):
     res = []
-    #res.extend(points)
+    res.extend(points)
     res.extend(path_zigzag(points))
-    #res.extend(path_zigzag(points, 'zag'))
+    res.extend(path_zigzag(points, 'zag'))
+    res.extend(loop_close)
     return res
 
 path = pathgen(points)
