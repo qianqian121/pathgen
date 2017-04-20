@@ -5,6 +5,10 @@ points = [(0.0,0.0), (9.0,0.0), (9.0,6.0), (0.0,6.0), (0.0,0.0)]
 loop_close = [(0.0,0.0), (5.0,0.0)]
 # points = [(0,0), (9,0), (9,6), (0,6), (0,0), (5,0)]
 
+points = [(0.0,0.0), (7.9248,0.0), (7.9248,-4.572), (0.0,-4.572), (0.0,0.0)]
+loop_close = [(0.0,0.0), (4.5,0.0)]
+
+
 def line_zigzag(line, zigzag, step):
     res = []
     p1 = line[0]
@@ -64,12 +68,12 @@ def path_zigzag(points, zigzag='zig', step=1):
 def pathgen(points, step=1):
     res = []
     res.extend(points)
-    res.extend(path_zigzag(points))
-    res.extend(path_zigzag(points, 'zag'))
+    res.extend(path_zigzag(points, step=step))
+    res.extend(path_zigzag(points, 'zag', step=step))
     res.extend(loop_close)
     return res
 
-path = pathgen(points)
+path = pathgen(points, 4.5)
 x, y = zip(*path)
 plt.scatter(x, y)
 # plt.show()
@@ -88,4 +92,4 @@ np.savetxt('tmp.csv', path, delimiter=",", fmt='%s')
 
 from subprocess import call
 
-call('./pathgen tmp.csv > drive_log.csv', shell=True)
+call('./pathgen tmp.csv > driving_lane.csv.garage.zigzag', shell=True)
