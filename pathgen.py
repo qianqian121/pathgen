@@ -72,4 +72,20 @@ def pathgen(points, step=1):
 path = pathgen(points)
 x, y = zip(*path)
 plt.scatter(x, y)
-plt.show()
+# plt.show()
+
+# import csv
+#
+# with open('tmp.csv', 'w') as tmpfile:
+#     # bug DO NOT USE
+#     wr = csv.writer(tmpfile, quoting=csv.QUOTE_ALL)
+#     for p in path:
+#         wr.writerow(str(p))
+#     tmpfile.close()
+
+import numpy as np
+np.savetxt('tmp.csv', path, delimiter=",", fmt='%s')
+
+from subprocess import call
+
+call('./pathgen tmp.csv > drive_log.csv', shell=True)

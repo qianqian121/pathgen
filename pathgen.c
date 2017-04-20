@@ -69,7 +69,7 @@ struct point {
     double y;
 };
 
-struct point point_array[] = {
+struct point point_array_[] = {
 #if 0
     {0, 0},
     {105.17f, 0.00f},
@@ -124,8 +124,39 @@ void generate_waypoints(void *array, int count)
 }
 
 #ifndef USE_GPX
-int main()
+int main(int argc, char** argv)
 {
+    struct point * point_array = NULL;
+    int line = 0;
+//    printf("%d argc \n", argc);
+    if (argc > 1) {
+        char *fname = argv[1];
+        FILE *fp = fopen(fname, "r");
+        if (!fp)
+            return -1;
+        char buff[256] = {0};
+        double x = 0.0f;
+        double y = 0.0f;
+
+        while (fgets(buff, 256, fp)) {
+            line++;
+        }
+        fseek(fp, 0, SEEK_SET);
+        point_array = (struct point *)malloc(line*sizeof(struct point));
+        int i = 0;
+        while (fgets(buff, 256, fp)) {
+            sscanf(buff, "%lf,%lf", &x, &y);
+            point_array[i].x = x;
+            point_array[i].y = y;
+            i++;
+        }
+        fclose(fp);
+    }
+    else {
+        point_array = point_array_;
+        line = sizeof (point_array_) / sizeof(struct point);
+    }
+
     printf("0.00,0.00,0.00\n");
 
 #if 0
@@ -135,11 +166,14 @@ int main()
         gen_line(point_array[i].x, point_array[i].y, point_array[i+1].x, point_array[i+1].y);
 #endif
 
-    int count = sizeof (point_array) / sizeof(struct point);
+    int count = line;
     generate_waypoints(&point_array[0], count);
 
     printf("200,0.00,0.00,0.00\n");
     printf("200,0.00,0.00,0.00\n");
+
+    if (argc > 1)
+        free(point_array);
     return 0;
 }
 #endif
