@@ -1,2 +1,3 @@
 all:
 	g++ -o pathgen pathgen.c -lm
+    g++ -DUSE_GPX -o gpathgen gpathgen.cpp pathgen.c -lm -IGeographicLib/include GeographicLib/libGeographic.a

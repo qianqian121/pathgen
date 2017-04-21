@@ -1,13 +1,36 @@
 from math import sqrt
 import matplotlib.pyplot as plt
 
+# path inside garage
 points = [(0.0,0.0), (9.0,0.0), (9.0,6.0), (0.0,6.0), (0.0,0.0)]
 loop_close = [(0.0,0.0), (5.0,0.0)]
 # points = [(0,0), (9,0), (9,6), (0,6), (0,0), (5,0)]
 
+# path for Gazebo simulation
 points = [(0.0,0.0), (7.9248,0.0), (7.9248,-4.572), (0.0,-4.572), (0.0,0.0)]
 loop_close = [(0.0,0.0), (4.5,0.0)]
 
+# path for Honeywell parking lot first try. DO NOT USE
+points = [
+        (0.0, 0.0),
+        (21.3151, 0.0),
+        (22.9451, 45.8042),
+        (14.0973, 48.659),
+        (-2.34517, 9.75557),
+        (0.0, 0.0)
+        ]
+
+# path for Honeywell parking lot demo
+points = [
+    (0.000000, 0.000000),
+    (23.168110, 0.000000),
+    (29.654981, 45.371788),
+    (21.160500, 49.150449),
+    (0.678128, 12.213946),
+    (0.000000, 0.000000)
+]
+
+loop_close = [(0.0,0.0), (9.0,0.0)]
 
 def line_zigzag(line, zigzag, step):
     res = []
@@ -73,7 +96,7 @@ def pathgen(points, step=1):
     res.extend(loop_close)
     return res
 
-path = pathgen(points, 4.5)
+path = pathgen(points, 7)
 x, y = zip(*path)
 plt.scatter(x, y)
 # plt.show()
@@ -92,4 +115,4 @@ np.savetxt('tmp.csv', path, delimiter=",", fmt='%s')
 
 from subprocess import call
 
-call('./pathgen tmp.csv > driving_lane.csv.garage.zigzag', shell=True)
+call('./pathgen tmp.csv > driving_lane.csv.honeywell.zigzag', shell=True)
