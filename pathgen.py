@@ -33,10 +33,14 @@ points = [
 # path for Honeywell parking lot big car demo
 points = [
     (0.000000, 0.000000),
-    (26.968110, 0.000000),
-    (29.654981, 49.371788),
-    (19.660500, 52.150449),
-    (1.678128, 12.213946),
+    (27.968110, 0.000000),
+    (32.654981, 49.371788),
+    (21.660500, 52.150449),
+    (13.660500, 46.150449),
+    (3.5, 21.0),
+    (-1.0, 7.0),
+    # (3.5, 15.0),
+    (-1.678128, -1.213946),
     # (0.000000, 0.000000)
 ]
 
@@ -109,7 +113,7 @@ def pathgen(points, step=1):
 path = pathgen(points, 7)
 x, y = zip(*path)
 plt.scatter(x, y)
-plt.show()
+# plt.show()
 
 # import csv
 #
@@ -125,4 +129,4 @@ np.savetxt('tmp.csv', path, delimiter=",", fmt='%s')
 
 from subprocess import call
 
-call('./pathgen tmp.csv > driving_lane.csv.honeywell.bigcar', shell=True)
+call('./pathgen tmp.csv > driving_lane.csv', shell=True)
