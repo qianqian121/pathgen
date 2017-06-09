@@ -44,6 +44,17 @@ points = [
     # (0.000000, 0.000000)
 ]
 
+# path for Honeywell parking lot high fast
+points = [
+    (0.000000, 0.000000),
+    (26.168110, 0.000000),
+    (29.654981, 49.371788),
+    (21.160500, 54.150449),
+    (0.678128, 12.213946),
+    (0.000000, 0.000000)
+]
+
+
 loop_close = [(0.0,0.0), (9.0,0.0)]
 
 def line_zigzag(line, zigzag, step):
@@ -105,6 +116,7 @@ def path_zigzag(points, zigzag='zig', step=1):
 def pathgen(points, step=1):
     res = []
     res.extend(points)
+    res.extend(points)
     # res.extend(path_zigzag(points, step=step))
     # res.extend(path_zigzag(points, 'zag', step=step))
     # res.extend(loop_close)
@@ -129,4 +141,4 @@ np.savetxt('tmp.csv', path, delimiter=",", fmt='%s')
 
 from subprocess import call
 
-call('./pathgen tmp.csv > driving_lane.csv', shell=True)
+call('./pathgen tmp.csv > driving_lane.csv.honeywell.2laps', shell=True)
